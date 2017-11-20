@@ -16,15 +16,20 @@ public:
     int getRefreshFreq();
     void setSpeed(int value);
     void setNumber(int value);
-    void GenIntPos(vector<QPoint>& points);
+    void GenIntPos(std::vector<QPoint> points);
+    void Clear();
+    QPolygon GetPolygon(int idx);
+
 private:
     int number;
     int speed;
+    int pointNumber;
     enum interpolationModeEnum{linear,vector,clockwise,counterClockwise} interpolationMode;
-    std::vector<QPoint> LinearInt(std::vector<std::vector<QPoint>> points);
-    std::vector<QPoint> VectorInt(std::vector<std::vector<QPoint>> points);
+    void LinearInt(std::vector<QPoint> points);
+    void VectorInt(std::vector<QPoint> points);
     std::vector<QPoint> EuclideanToPolar(std::vector<QPoint> points);
     std::vector<QPoint> PolarToEuclidian(std::vector<QPoint> points);
+    std::vector<QPoint> intPoints;
 
 };
 

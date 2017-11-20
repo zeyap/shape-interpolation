@@ -14,6 +14,7 @@ RenderArea::RenderArea(QWidget *parent)
     currentSubject=before;
     isShapeShown[before]=false;
     isShapeShown[after]=false;
+    isShapeShown[2]=false;
 
     pointNum[0]=0;
     pointNum[1]=0;
@@ -38,8 +39,8 @@ void RenderArea::setSpeed(float value){
 
 void RenderArea::drawShape(){
     if(currentSubject==before){
-        currentSubject=after;
         isShapeShown[before]=true;
+        currentSubject=after;
     }
     else{
         if(isDrawingDone()){
@@ -51,10 +52,12 @@ void RenderArea::drawShape(){
 
 void RenderArea::clear(){
     pointsCoord.clear();
+    interpolationControl->Clear();
     update();
 }
 
 void RenderArea::play(){
+    isShapeShown[2]=true;
     interpolationControl->GenIntPos(pointsCoord);
     update();
 
@@ -73,7 +76,7 @@ void RenderArea::mousePressEvent(QMouseEvent *event){
 }
 
 bool RenderArea::isDrawingDone(){
-    return pointNum[before]==pointNum[after]&&pointNum!=0;
+    return pointNum[before]==pointNum[after]&&pointNum[before]!=0;
 }
 
 
@@ -83,21 +86,34 @@ void RenderArea::paintEvent(QPaintEvent *){
     QColor cPoint=QColor(0,0,0);
     painter.setPen(QPen(cPoint,0));
 
+    //points
     for(int i=0;i<pointsCoord.size();i++){
         painter.drawEllipse(pointsCoord[i],5,5);
-
     }
 
 
+    //start&end polygons
     QPainterPath path;
+    QPolygon polygon[2];
     for(int k=0;k<2;k++){
         if(isShapeShown[k]){
+            int idx;
             for(int i=0;i<pointNum[k];i++){
-                int idx=pointNum[0]*k+i;
-                path.lineTo(pointsCoord[idx].x(),pointsCoord[idx].y());
+                idx=pointNum[0]*k+i;
+                polygon[k].push_back(pointsCoord[idx]);
             }
+            idx=pointNum[0]*k+0;
+            polygon[k].push_back(pointsCoord[idx]);
         }
-        painter.drawPath(path);
+        path.addPolygon(polygon[k]);
     }
+
+
+    //interval pos
+    if(isShapeShown[2]){
+        path.addPolygon(interpolationControl->GetPolygon(5));
+    }
+
+    painter.drawPath(path);
 
 }
