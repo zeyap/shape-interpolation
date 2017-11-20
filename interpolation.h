@@ -18,7 +18,7 @@ public:
     void setNumber(int value);
     void GenIntPos(std::vector<QPoint> points);
     void Clear();
-    QPolygon GetPolygon(int idx);
+    QPolygon GetPolygon(int& idx);
 
 private:
     int number;

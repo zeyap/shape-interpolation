@@ -18,8 +18,8 @@ Window::Window()
 
     //speed slider
     speedSlider=new QSlider(Qt::Horizontal);
-    speedSlider->setMinimum(100);
-    speedSlider->setMaximum(500);
+    speedSlider->setMinimum(1);
+    speedSlider->setMaximum(5);
     speedLabel= new QLabel(tr("Speed"));
     speedLabel->setBuddy(speedSlider);
 

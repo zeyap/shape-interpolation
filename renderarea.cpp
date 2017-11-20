@@ -8,6 +8,12 @@ RenderArea::RenderArea(QWidget *parent)
     interpolationControl=new(Interpolation);
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
+
+    Refresh();
+
+}
+
+void RenderArea::Refresh(){
     movingStep=0;
 
     isTimerEnabled=false;
@@ -18,14 +24,22 @@ RenderArea::RenderArea(QWidget *parent)
 
     pointNum[0]=0;
     pointNum[1]=0;
+    numberTemp=10;
+
+    SetTimer();
+    interpolationControl->Clear();
 }
 
 void RenderArea::setNumber(int value){
-    interpolationControl->setNumber(value);
+    numberTemp=value;
 }
 
 void RenderArea::setSpeed(float value){
     interpolationControl->setSpeed(value);
+    SetTimer();
+}
+
+void RenderArea::SetTimer(){
     if(isTimerEnabled){
         delete timer;
     }
@@ -51,12 +65,14 @@ void RenderArea::drawShape(){
 }
 
 void RenderArea::clear(){
+    Refresh();
     pointsCoord.clear();
-    interpolationControl->Clear();
     update();
 }
 
 void RenderArea::play(){
+    movingStep=0;
+    interpolationControl->setNumber(numberTemp);
     isShapeShown[2]=true;
     interpolationControl->GenIntPos(pointsCoord);
     update();
@@ -107,13 +123,15 @@ void RenderArea::paintEvent(QPaintEvent *){
         }
         path.addPolygon(polygon[k]);
     }
-
+    painter.drawPath(path);
 
     //interval pos
     if(isShapeShown[2]){
-        path.addPolygon(interpolationControl->GetPolygon(5));
+        QPainterPath path2;
+        path2.addPolygon(interpolationControl->GetPolygon(movingStep));
+        painter.drawPath(path2);
     }
 
-    painter.drawPath(path);
+
 
 }

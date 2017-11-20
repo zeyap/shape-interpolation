@@ -37,11 +37,14 @@ protected:
     void paintEvent(QPaintEvent *) override;
     void redrawIntPoints();
     bool isDrawingDone();
+    void SetTimer();
+    void Refresh();
 
 private:
 
     int movingStep;
     QTimer *timer;
+    int numberTemp;
     bool isTimerEnabled;
     enum currentSubjectEnum{before, after, trans} currentSubject;
     bool isShapeShown[3];

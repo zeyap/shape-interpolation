@@ -3,12 +3,13 @@
 Interpolation::Interpolation()
 {
     number=10;
-    speed=100;
-    interpolationMode=linear;
+    speed=1;
+    interpolationMode=vector;
+    Clear();
 }
 
 int Interpolation::getRefreshFreq(){
-    return 5/(speed*number);
+    return 3000/(speed*number);
 }
 void Interpolation::setSpeed(int value){
     speed=value;
@@ -19,7 +20,9 @@ void Interpolation::setNumber(int value){
 }
 
 void Interpolation::Clear(){
-    intPoints.clear();
+    //intPoints.clear();
+    intPoints=std::vector<QPoint>(50*3,QPoint(0,0));
+
 }
 
 void Interpolation::GenIntPos(std::vector<QPoint> points){
@@ -47,7 +50,7 @@ void Interpolation::LinearInt(std::vector<QPoint> points){
         t=i*1.0f/number;
         for(int j=0;j<pointNumber;j++){
             qtemp=QPoint((1-t)*points[j].x()+t*points[pointNumber+j].x(),(1-t)*points[j].y()+t*points[pointNumber+j].y());
-            intPoints.push_back(qtemp);
+            intPoints[pointNumber*i+j]=qtemp;
         }
     }
 }
@@ -64,7 +67,7 @@ void Interpolation::VectorInt(std::vector<QPoint> points){
 
 std::vector<QPoint> Interpolation::EuclideanToPolar(std::vector<QPoint> points){
     std::vector<QPoint> polarPoints;
-    int pointsNum=points.size();
+    int pointsNum=points.size()/2;
     int x,y;
     float scale=100.0f;
     for(int j=0;j<2;j++){
@@ -90,8 +93,10 @@ std::vector<QPoint> Interpolation::PolarToEuclidian(std::vector<QPoint> points){
     return euclideanPoints;
 }
 
-QPolygon Interpolation::GetPolygon(int idx){
+QPolygon Interpolation::GetPolygon(int& idx){
     QPolygon newPolygon;
+    idx++;
+    if(idx>=number)idx=0;
     for(int i=0;i<pointNumber;i++){
         newPolygon.push_back(intPoints[idx*pointNumber+i]);
     }
