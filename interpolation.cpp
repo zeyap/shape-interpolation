@@ -1,4 +1,5 @@
 #include "interpolation.h"
+#define PI 3.14f;
 
 Interpolation::Interpolation()
 {
@@ -6,7 +7,6 @@ Interpolation::Interpolation()
     pointNumber=0;
     speed=1;
     interpolationMode=vector;
-    Clear();
 }
 
 int Interpolation::getRefreshFreq(){
@@ -26,6 +26,7 @@ void Interpolation::Clear(){
 }
 
 void Interpolation::GenIntPos(std::vector<QPoint> points){
+    Clear();
     pointNumber=points.size()/2;
     switch(interpolationMode){
     case linear:
@@ -35,8 +36,10 @@ void Interpolation::GenIntPos(std::vector<QPoint> points){
         VectorInt(points);
         break;
     case clockwise:
+        VectorInt(points);
         break;
     case counterClockwise:
+        VectorInt(points);
         break;
     default:
         break;
@@ -67,7 +70,7 @@ void Interpolation::GenOrigins(std::vector<QPoint> points){
 void Interpolation::VectorInt(std::vector<QPoint> points){
 
     GenOrigins(points);
-    std::vector<QPoint> polarPoints=EuclideanToPolar(points,"normal");
+    std::vector<QPoint> polarPoints=EuclideanToPolar(points);
     LinearInt(polarPoints);
     std::vector<QPoint> newPoints=PolarToEuclidian(intPoints);
     intPoints.swap(newPoints);
@@ -75,20 +78,29 @@ void Interpolation::VectorInt(std::vector<QPoint> points){
 
 }
 
-std::vector<QPoint> Interpolation::EuclideanToPolar(std::vector<QPoint> points,QString mode){
+std::vector<QPoint> Interpolation::EuclideanToPolar(std::vector<QPoint> points){
     std::vector<QPoint> polarPoints;
     std::vector<QPoint> originsAtEnds;
 
     int pointsNum=points.size()/2;
 
     int x,y;
+    float r,t;
     float scale=100.0f;
     for(int j=0;j<2;j++){
         originsAtEnds.push_back(points[pointsNum*j]);
         for(int i=0;i<pointsNum;i++){
             x=points[j*pointsNum+i].x()-originsAtEnds[j].x();
             y=points[j*pointsNum+i].y()-originsAtEnds[j].y();
-            polarPoints.push_back(QPoint(std::sqrt(x*x+y*y)*scale,std::atan2(y,x)*scale));
+            r=std::sqrt(x*x+y*y);
+            t=std::atan2(y,x);
+            if(interpolationMode==clockwise&&j==1){
+                t+=2*PI;
+            }else if(interpolationMode==counterClockwise&&j==0){
+                t+=2*PI;
+            }
+
+            polarPoints.push_back(QPoint(r*scale,t*scale));
         }
     }
     return polarPoints;
@@ -121,7 +133,11 @@ QPolygon Interpolation::GetPolygon(int& idx){
 void Interpolation::setMode(int mode){
     if(mode==0){
         interpolationMode=linear;
-    }else{
+    }else if(mode==1){
         interpolationMode=vector;
+    }else if(mode==2){
+        interpolationMode=clockwise;
+    }else{
+        interpolationMode=counterClockwise;
     }
 }

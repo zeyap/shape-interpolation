@@ -30,6 +30,8 @@ Window::Window()
     modeComboBox = new QComboBox();
     modeComboBox->addItem(tr("linear"));
     modeComboBox->addItem(tr("vector"));
+    modeComboBox->addItem(tr("clockwise"));
+    modeComboBox->addItem(tr("counterClock"));
 
     //play button
     clearButton = new QPushButton(tr("Clear"));
@@ -83,7 +85,7 @@ void Window::numberChanged(int value){
 }
 
 void Window::frequencyChanged(int value){
-    renderArea->setSpeed((float)value*0.001);
+    renderArea->setSpeed((float)value);
 }
 
 void Window::drawShape(){
