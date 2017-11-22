@@ -94,12 +94,15 @@ std::vector<QPoint> Interpolation::EuclideanToPolar(std::vector<QPoint> points){
             y=points[j*pointsNum+i].y()-originsAtEnds[j].y();
             r=std::sqrt(x*x+y*y);
             t=std::atan2(y,x);
-            if(interpolationMode==clockwise&&j==1){
-                t+=2*PI;
-            }else if(interpolationMode==counterClockwise&&j==0){
-                t+=2*PI;
+            if(j==1){
+                if(interpolationMode==clockwise){
+                    if(t*scale<polarPoints[i].y())
+                        t+=2*PI;
+                }else if(interpolationMode==counterClockwise){
+                    if(t*scale>polarPoints[i].y())
+                        t-=2*PI;
+                }
             }
-
             polarPoints.push_back(QPoint(r*scale,t*scale));
         }
     }
