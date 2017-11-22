@@ -31,6 +31,7 @@ public slots:
     void drawShape();
     void clear();
     void play();
+    void changeMode(int mode);
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -45,6 +46,7 @@ private:
     int movingStep;
     QTimer *timer;
     int numberTemp;
+    int modeTemp;
     bool isTimerEnabled;
     enum currentSubjectEnum{before, after, trans} currentSubject;
     bool isShapeShown[3];

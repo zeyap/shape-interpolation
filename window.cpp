@@ -26,8 +26,13 @@ Window::Window()
     //drawLine button
     drawShapeButton = new QPushButton(tr("Draw Shape"));
 
-    //clear button
-    clearButton = new QPushButton(tr("Clear"));\
+    //mode combobox
+    modeComboBox = new QComboBox();
+    modeComboBox->addItem(tr("linear"));
+    modeComboBox->addItem(tr("vector"));
+
+    //play button
+    clearButton = new QPushButton(tr("Clear"));
 
     //play button
     playButton = new QPushButton(tr("Play"));
@@ -36,12 +41,14 @@ Window::Window()
     connect(numberSpinBox, SIGNAL(valueChanged(int)),
             this, SLOT(numberChanged(int)));
     connect(speedSlider, SIGNAL(valueChanged(int)),
-            this, SLOT(speedChanged(int)));
+            this, SLOT(frequencyChanged(int)));
 
     connect(drawShapeButton, SIGNAL(clicked()),
             this, SLOT(drawShape()));
     connect(clearButton, SIGNAL(clicked()),
             this, SLOT(clear()));
+    connect(modeComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(changeMode(int)));
     connect(playButton, SIGNAL(clicked()),
             this, SLOT(play()));
 
@@ -64,7 +71,8 @@ Window::Window()
     mainLayout->addWidget(speedLabel, 1, 0, Qt::AlignRight);
     mainLayout->addWidget(speedSlider, 1, 1);
 
-    mainLayout->addWidget(playButton, 2, 5);
+    mainLayout->addWidget(modeComboBox, 2, 4);
+    mainLayout->addWidget(playButton, 3, 4);
     setLayout(mainLayout);
 
     setWindowTitle(tr("E2"));
@@ -83,6 +91,9 @@ void Window::drawShape(){
 }
 void Window::clear(){
     renderArea->clear();
+}
+void Window::changeMode(int mode){
+    renderArea->changeMode(mode);
 }
 void Window::play(){
     renderArea->play();

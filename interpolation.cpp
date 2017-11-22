@@ -3,6 +3,7 @@
 Interpolation::Interpolation()
 {
     number=10;
+    pointNumber=0;
     speed=1;
     interpolationMode=vector;
     Clear();
@@ -20,8 +21,7 @@ void Interpolation::setNumber(int value){
 }
 
 void Interpolation::Clear(){
-    //intPoints.clear();
-    intPoints=std::vector<QPoint>(50*3,QPoint(0,0));
+    intPoints=std::vector<QPoint>(number*30,QPoint(0,0));
 
 }
 
@@ -57,7 +57,7 @@ void Interpolation::LinearInt(std::vector<QPoint> points){
 
 void Interpolation::VectorInt(std::vector<QPoint> points){
 
-    std::vector<QPoint> polarPoints=EuclideanToPolar(points);
+    std::vector<QPoint> polarPoints=EuclideanToPolar(points,"origin");
     LinearInt(polarPoints);
     std::vector<QPoint> newPoints=PolarToEuclidian(intPoints);
     intPoints.swap(newPoints);
@@ -65,8 +65,9 @@ void Interpolation::VectorInt(std::vector<QPoint> points){
 
 }
 
-std::vector<QPoint> Interpolation::EuclideanToPolar(std::vector<QPoint> points){
+std::vector<QPoint> Interpolation::EuclideanToPolar(std::vector<QPoint> points,QString mode){
     std::vector<QPoint> polarPoints;
+
     int pointsNum=points.size()/2;
     int x,y;
     float scale=100.0f;
@@ -102,4 +103,12 @@ QPolygon Interpolation::GetPolygon(int& idx){
     }
     newPolygon.push_back(intPoints[idx*pointNumber+0]);
     return newPolygon;
+}
+
+void Interpolation::setMode(int mode){
+    if(mode==0){
+        interpolationMode=linear;
+    }else{
+        interpolationMode=vector;
+    }
 }

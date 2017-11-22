@@ -8,6 +8,7 @@ class QLabel;
 class QPushButton;
 class QSpinBox;
 class QSlider;
+class QComboBox;
 
 class RenderArea;
 
@@ -26,6 +27,7 @@ private slots:
     void drawShape();
     void clear();
     void play();
+    void changeMode(int mode);
 
 private:
     RenderArea *renderArea;
@@ -41,6 +43,8 @@ private:
     QPushButton *clearButton;
 
     QPushButton *playButton;
+
+    QComboBox *modeComboBox;
 
 };
 

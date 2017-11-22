@@ -9,6 +9,7 @@ RenderArea::RenderArea(QWidget *parent)
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
 
+    modeTemp=0;
     Refresh();
 
 }
@@ -70,9 +71,14 @@ void RenderArea::clear(){
     update();
 }
 
+void RenderArea::changeMode(int mode){
+    modeTemp=mode;
+}
+
 void RenderArea::play(){
     movingStep=0;
     interpolationControl->setNumber(numberTemp);
+    interpolationControl->setMode(modeTemp);
     isShapeShown[2]=true;
     interpolationControl->GenIntPos(pointsCoord);
     update();
