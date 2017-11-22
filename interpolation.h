@@ -29,7 +29,9 @@ private:
     void VectorInt(std::vector<QPoint> points);
     std::vector<QPoint> EuclideanToPolar(std::vector<QPoint> points,QString mode);
     std::vector<QPoint> PolarToEuclidian(std::vector<QPoint> points);
+    void GenOrigins(std::vector<QPoint> points);
     std::vector<QPoint> intPoints;
+    std::vector<QPoint> origins;
     enum interpolationModeEnum{linear,vector,clockwise,counterClockwise} interpolationMode;
 
 };
