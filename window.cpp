@@ -60,21 +60,24 @@ Window::Window()
     mainLayout->setColumnStretch(0, 1);
     //Columns with a higher stretch factor take more of the available space.
     //default is 0
+    mainLayout->setColumnStretch(1, 1);
+    mainLayout->setColumnStretch(2, 1);
     mainLayout->setColumnStretch(3, 1);
-    resize(500,500);
+    mainLayout->setColumnStretch(4, 1);
+    resize(800,600);
     mainLayout->addWidget(renderArea, 0, 0, renderArea->height, renderArea->width);
-
-    mainLayout->addWidget(numberLabel, 2, 0, Qt::AlignRight);
-    mainLayout->addWidget(numberSpinBox, 2, 1);
-
-    mainLayout->addWidget(drawShapeButton, 2, 3);
-    mainLayout->addWidget(clearButton, 3, 3);
 
     mainLayout->addWidget(speedLabel, 1, 0, Qt::AlignRight);
     mainLayout->addWidget(speedSlider, 1, 1);
 
-    mainLayout->addWidget(modeComboBox, 2, 4);
-    mainLayout->addWidget(playButton, 3, 4);
+    mainLayout->addWidget(numberLabel, 2, 0, Qt::AlignRight);
+    mainLayout->addWidget(numberSpinBox, 2, 1);
+
+    mainLayout->addWidget(drawShapeButton, 1, 2);
+    mainLayout->addWidget(clearButton, 1, 4);
+
+    mainLayout->addWidget(modeComboBox, 1, 3);
+    mainLayout->addWidget(playButton, 2, 3);
     setLayout(mainLayout);
 
     setWindowTitle(tr("E2"));

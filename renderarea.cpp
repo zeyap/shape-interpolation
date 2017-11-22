@@ -103,9 +103,18 @@ bool RenderArea::isDrawingDone(){
 
 
 void RenderArea::paintEvent(QPaintEvent *){
+    QColor cPoint=cActive;
+    QColor cLine=cActive;
+    QColor cIntLine=cActive;
+
+    if(isShapeShown[2]){
+        cPoint=cInactive;
+        cLine=cInactive;
+        cIntLine=cActive;
+    }
 
     QPainter painter(this);
-    QColor cPoint=QColor(0,0,0);
+
     painter.setPen(QPen(cPoint,0));
 
     //points
@@ -113,6 +122,7 @@ void RenderArea::paintEvent(QPaintEvent *){
         painter.drawEllipse(pointsCoord[i],5,5);
     }
 
+    painter.setPen(QPen(cLine,0));
 
     //start&end polygons
     QPainterPath path;
@@ -130,6 +140,9 @@ void RenderArea::paintEvent(QPaintEvent *){
         path.addPolygon(polygon[k]);
     }
     painter.drawPath(path);
+
+
+    painter.setPen(QPen(cIntLine,0));
 
     //interval pos
     if(isShapeShown[2]){

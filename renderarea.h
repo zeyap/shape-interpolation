@@ -51,6 +51,8 @@ private:
     enum currentSubjectEnum{before, after, trans} currentSubject;
     bool isShapeShown[3];
     int pointNum[2];
+    QColor cActive=QColor(0,200,100);
+    QColor cInactive=QColor(250,200,0);
 
 };
 
