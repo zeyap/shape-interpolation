@@ -1,14 +1,13 @@
 #ifndef SNAPSHOT_H
 #define SNAPSHOT_H
 
-#include <QWaitCondition>
-#include <QMutex>
-#include <QThread>
 #include <QFile>
-#include <QReadWriteLock>
 #include <QPixmap>
 #include <QWidget>
-
+#include "CAviFile/AviFile.h"
+QT_BEGIN_NAMESPACE
+Q_GUI_EXPORT HBITMAP qt_pixmapToWinHBITMAP(
+    const QPixmap &p, int hbitmapFormat = 0);
 
 class Snapshot:public QWidget//: public QThread
 {
@@ -22,6 +21,8 @@ private:
     void SaveImg(QString fpath,QPixmap pixmap);
     void Refresh();
     int saveProgress;
+    void ImgToAvi();
+    CAviFile* aviFile;
 
 };
 
