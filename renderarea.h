@@ -13,6 +13,7 @@
 #include<string>
 #include<interpolation.h>
 #include <snapshot.h>
+#include <window.h>
 
 class RenderArea : public QWidget
 {

@@ -9,6 +9,7 @@ class QPushButton;
 class QSpinBox;
 class QSlider;
 class QComboBox;
+class QMainWindow;
 
 class RenderArea;
 
@@ -18,6 +19,7 @@ class Window : public QWidget
 
 public:
     Window();
+    static void setStatus(QString str);
 
 private slots:
 

@@ -18,6 +18,7 @@ RenderArea::RenderArea(QWidget *parent)
 
 void RenderArea::Refresh(){
     movingStep=0;
+    snapshot->Refresh();
 
     isTimerEnabled=false;
     currentSubject=before;
@@ -59,7 +60,7 @@ void RenderArea::UpdateAndShootScreen(){
     if(isShapeShown[2]){
         QPixmap pixmap = QPixmap::grabWidget(this);
         if(snapshot->save(movingStep,pixmap)==interpolationControl->getNumber()){
-            //
+            Window::setStatus("SUCCESSFULLY SAVED!");
         }
     }
 

@@ -5,6 +5,7 @@
 #include <QGridLayout>
 
 const int IdRole = Qt::UserRole;
+static QLabel* statusLabel;
 
 Window::Window()
 {
@@ -39,6 +40,8 @@ Window::Window()
     //play button
     playButton = new QPushButton(tr("Play"));
 
+    statusLabel=new QLabel(tr(" "));
+
 
     connect(numberSpinBox, SIGNAL(valueChanged(int)),
             this, SLOT(numberChanged(int)));
@@ -58,10 +61,10 @@ Window::Window()
 
     QGridLayout *mainLayout = new QGridLayout;
 
-    mainLayout->setRowStretch(0,renderArea->height);
-    mainLayout->setColumnStretch(0, 1);
+    mainLayout->setRowStretch(1,renderArea->height);
     //Columns with a higher stretch factor take more of the available space.
     //default is 0
+
     mainLayout->setColumnStretch(1, 1);
     mainLayout->setColumnStretch(2, 1);
     mainLayout->setColumnStretch(3, 1);
@@ -69,21 +72,27 @@ Window::Window()
     resize(800,600);
     mainLayout->addWidget(renderArea, 0, 0, renderArea->height, renderArea->width);
 
-    mainLayout->addWidget(speedLabel, 1, 0, Qt::AlignRight);
-    mainLayout->addWidget(speedSlider, 1, 1);
+    mainLayout->addWidget(speedLabel, 2, 0, Qt::AlignRight);
+    mainLayout->addWidget(speedSlider, 2, 1);
 
-    mainLayout->addWidget(numberLabel, 2, 0, Qt::AlignRight);
-    mainLayout->addWidget(numberSpinBox, 2, 1);
+    mainLayout->addWidget(numberLabel, 3, 0, Qt::AlignRight);
+    mainLayout->addWidget(numberSpinBox, 3, 1);
 
-    mainLayout->addWidget(drawShapeButton, 1, 2);
-    mainLayout->addWidget(saveButton, 1, 4);
-    mainLayout->addWidget(clearButton, 2, 4);
+    mainLayout->addWidget(drawShapeButton, 2, 2);
+    mainLayout->addWidget(saveButton, 2, 4);
+    mainLayout->addWidget(clearButton, 3, 4);
 
-    mainLayout->addWidget(modeComboBox, 1, 3);
-    mainLayout->addWidget(playButton, 2, 3);
+    mainLayout->addWidget(modeComboBox, 2, 3);
+    mainLayout->addWidget(playButton, 3, 3);
+
+    mainLayout->addWidget(statusLabel,0,0);
+
     setLayout(mainLayout);
 
     setWindowTitle(tr("E2"));
+    setStatus("");
+
+
 }
 
 void Window::numberChanged(int value){
@@ -99,6 +108,7 @@ void Window::drawShape(){
 }
 void Window::clear(){
     renderArea->clear();
+    setStatus("");
 }
 void Window::changeMode(int mode){
     renderArea->changeMode(mode);
@@ -109,4 +119,8 @@ void Window::play(){
 
 void Window::save(){
     renderArea->save();
+}
+
+void Window::setStatus(QString str){
+    statusLabel->setText(str);
 }
