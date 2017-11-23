@@ -16,6 +16,9 @@ public:
     int getRefreshFreq();
     void setSpeed(int value);
     void setNumber(int value);
+    int getNumber(){
+        return number;
+    }
     void GenIntPos(std::vector<QPoint> points);
     void Clear();
     QPolygon GetPolygon(int& idx);

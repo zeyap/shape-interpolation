@@ -28,6 +28,7 @@ private slots:
     void clear();
     void play();
     void changeMode(int mode);
+    void save();
 
 private:
     RenderArea *renderArea;
@@ -41,6 +42,7 @@ private:
     QPushButton *drawShapeButton;
 
     QPushButton *clearButton;
+    QPushButton *saveButton;
 
     QPushButton *playButton;
 

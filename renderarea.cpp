@@ -6,6 +6,8 @@ RenderArea::RenderArea(QWidget *parent)
     : QWidget(parent)
 {
     interpolationControl=new(Interpolation);
+    snapshot=new(Snapshot);
+
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
 
@@ -48,8 +50,19 @@ void RenderArea::SetTimer(){
     timer = new QTimer(this);
     isTimerEnabled=true;
 
-    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(UpdateAndShootScreen()));
     timer->start(interpolationControl->getRefreshFreq());
+}
+
+void RenderArea::UpdateAndShootScreen(){
+    update();
+    if(isShapeShown[2]){
+        QPixmap pixmap = QPixmap::grabWidget(this);
+        if(snapshot->save(movingStep,pixmap)==interpolationControl->getNumber()){
+            //
+        }
+    }
+
 }
 
 void RenderArea::drawShape(){
@@ -69,6 +82,10 @@ void RenderArea::clear(){
     Refresh();
     pointsCoord.clear();
     update();
+}
+
+void RenderArea::save(){
+    snapshot->On();
 }
 
 void RenderArea::changeMode(int mode){
@@ -106,6 +123,7 @@ void RenderArea::paintEvent(QPaintEvent *){
     QColor cPoint=cActive;
     QColor cLine=cActive;
     QColor cIntLine=cActive;
+    QBrush brush;
 
     if(isShapeShown[2]){
         cPoint=cInactive;
@@ -119,12 +137,14 @@ void RenderArea::paintEvent(QPaintEvent *){
 
     //points
     for(int i=0;i<pointsCoord.size();i++){
-        painter.drawEllipse(pointsCoord[i],5,5);
+        painter.drawEllipse(pointsCoord[i],3,3);
     }
 
     painter.setPen(QPen(cLine,0));
 
     //start&end polygons
+    brush=QBrush(cLine, Qt::BDiagPattern);
+    painter.setBrush(brush);
     QPainterPath path;
     QPolygon polygon[2];
     for(int k=0;k<2;k++){
@@ -143,14 +163,12 @@ void RenderArea::paintEvent(QPaintEvent *){
 
 
     painter.setPen(QPen(cIntLine,0));
-
+    brush=QBrush(cIntLine, Qt::Dense7Pattern);
+    painter.setBrush(brush);
     //interval pos
     if(isShapeShown[2]){
         QPainterPath path2;
         path2.addPolygon(interpolationControl->GetPolygon(movingStep));
         painter.drawPath(path2);
     }
-
-
-
 }

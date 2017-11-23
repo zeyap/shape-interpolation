@@ -12,6 +12,7 @@
 #include <vector>
 #include<string>
 #include<interpolation.h>
+#include <snapshot.h>
 
 class RenderArea : public QWidget
 {
@@ -19,6 +20,7 @@ class RenderArea : public QWidget
 
 public:
     Interpolation* interpolationControl;
+    Snapshot* snapshot;
     RenderArea(QWidget *parent = 0);
     int height=100;
     int width=100;
@@ -32,6 +34,9 @@ public slots:
     void clear();
     void play();
     void changeMode(int mode);
+    void save();
+
+    void UpdateAndShootScreen();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

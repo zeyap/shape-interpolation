@@ -33,8 +33,8 @@ Window::Window()
     modeComboBox->addItem(tr("clockwise"));
     modeComboBox->addItem(tr("counterClock"));
 
-    //play button
     clearButton = new QPushButton(tr("Clear"));
+    saveButton = new QPushButton(tr("Save"));
 
     //play button
     playButton = new QPushButton(tr("Play"));
@@ -49,6 +49,8 @@ Window::Window()
             this, SLOT(drawShape()));
     connect(clearButton, SIGNAL(clicked()),
             this, SLOT(clear()));
+    connect(saveButton, SIGNAL(clicked()),
+            this, SLOT(save()));
     connect(modeComboBox,SIGNAL(currentIndexChanged(int)),
             this,SLOT(changeMode(int)));
     connect(playButton, SIGNAL(clicked()),
@@ -74,7 +76,8 @@ Window::Window()
     mainLayout->addWidget(numberSpinBox, 2, 1);
 
     mainLayout->addWidget(drawShapeButton, 1, 2);
-    mainLayout->addWidget(clearButton, 1, 4);
+    mainLayout->addWidget(saveButton, 1, 4);
+    mainLayout->addWidget(clearButton, 2, 4);
 
     mainLayout->addWidget(modeComboBox, 1, 3);
     mainLayout->addWidget(playButton, 2, 3);
@@ -102,4 +105,8 @@ void Window::changeMode(int mode){
 }
 void Window::play(){
     renderArea->play();
+}
+
+void Window::save(){
+    renderArea->save();
 }

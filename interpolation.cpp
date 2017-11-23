@@ -10,7 +10,7 @@ Interpolation::Interpolation()
 }
 
 int Interpolation::getRefreshFreq(){
-    return 3000/(speed*number);
+    return 5000/(speed*number);
 }
 void Interpolation::setSpeed(int value){
     speed=value;
