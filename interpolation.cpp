@@ -21,8 +21,8 @@ void Interpolation::setNumber(int value){
 }
 
 void Interpolation::Clear(){
-    intPoints=std::vector<QPoint>(number*30,QPoint(0,0));
-    origins=std::vector<QPoint>(number,QPoint(0,0));
+    intPoints=std::vector<QPoint>((number+1)*30,QPoint(0,0));
+    origins=std::vector<QPoint>(number+1,QPoint(0,0));
 }
 
 void Interpolation::GenIntPos(std::vector<QPoint> points){
@@ -48,7 +48,7 @@ void Interpolation::GenIntPos(std::vector<QPoint> points){
 
 void Interpolation::LinearInt(std::vector<QPoint> points){
     float t;
-    for(int i=0;i<number;i++){
+    for(int i=0;i<=number;i++){
         t=i*1.0f/number;
         for(int j=0;j<pointNumber;j++){
             intPoints[pointNumber*i+j]=QPoint((1-t)*points[j].x()+t*points[pointNumber+j].x(),(1-t)*points[j].y()+t*points[pointNumber+j].y());
@@ -61,7 +61,7 @@ void Interpolation::GenOrigins(std::vector<QPoint> points){
     start=points[0];
     end=points[pointNumber];
     float t;
-    for(int i=0;i<number;i++){
+    for(int i=0;i<=number;i++){
         t=i*1.0f/number;
         origins[i]=QPoint((1-t)*start.x()+t*end.x(),(1-t)*start.y()+t*end.y());
     }
@@ -80,7 +80,6 @@ void Interpolation::VectorInt(std::vector<QPoint> points){
 
 std::vector<QPoint> Interpolation::EuclideanToPolar(std::vector<QPoint> points){
     std::vector<QPoint> polarPoints;
-    std::vector<QPoint> originsAtEnds;
 
     int pointsNum=points.size()/2;
 
@@ -88,10 +87,16 @@ std::vector<QPoint> Interpolation::EuclideanToPolar(std::vector<QPoint> points){
     float r,t;
     float scale=100.0f;
     for(int j=0;j<2;j++){
-        originsAtEnds.push_back(points[pointsNum*j]);
+
         for(int i=0;i<pointsNum;i++){
-            x=points[j*pointsNum+i].x()-originsAtEnds[j].x();
-            y=points[j*pointsNum+i].y()-originsAtEnds[j].y();
+            if(i==0){
+                x=points[j*pointsNum+i].x()-origins[j*number].x();
+                y=points[j*pointsNum+i].y()-origins[j*number].y();
+            }else{
+                x=points[j*pointsNum+i].x()-points[j*pointsNum+i-1].x();
+                y=points[j*pointsNum+i].y()-points[j*pointsNum+i-1].y();
+            }
+
             r=std::sqrt(x*x+y*y);
             t=std::atan2(y,x);
             if(j==1){
@@ -114,10 +119,16 @@ std::vector<QPoint> Interpolation::PolarToEuclidian(std::vector<QPoint> points){
 
     float r,t;
     float scale=100.0f;
-    for(int i=0;i<pointNumber*number;i++){
+    for(int i=0;i<=pointNumber*number;i++){
         r=points[i].x()/scale;
         t=points[i].y()/scale;
-        euclideanPoints.push_back(QPoint(r*std::cos(t)+origins[i/pointNumber].x(),r*std::sin(t)+origins[i/pointNumber].y()));
+
+        if(i%pointNumber==0){
+            euclideanPoints.push_back(QPoint(r*std::cos(t),r*std::sin(t))+origins[i/pointNumber]);
+        }else{
+            euclideanPoints.push_back(QPoint(r*std::cos(t)+euclideanPoints[i-1].x(),r*std::sin(t)+euclideanPoints[i-1].y()));
+        }
+
     }
     return euclideanPoints;
 }
