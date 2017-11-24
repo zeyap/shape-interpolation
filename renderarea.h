@@ -42,12 +42,13 @@ public slots:
 protected:
     void mousePressEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *) override;
+
+private:
+
     void redrawIntPoints();
     bool isDrawingDone();
     void SetTimer();
     void Refresh();
-
-private:
 
     int movingStep;
     QTimer *timer;

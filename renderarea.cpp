@@ -95,9 +95,9 @@ void RenderArea::changeMode(int mode){
 
 void RenderArea::play(){
     movingStep=0;
+    isShapeShown[2]=true;
     interpolationControl->setNumber(numberTemp);
     interpolationControl->setMode(modeTemp);
-    isShapeShown[2]=true;
     interpolationControl->GenIntPos(pointsCoord);
     update();
 
