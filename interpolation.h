@@ -13,7 +13,7 @@ class Interpolation
 {
 public:
     Interpolation();
-    int getRefreshFreq();
+    int getRefreshInterval();
     void setSpeed(int value);
     void setNumber(int value);
     int getNumber(){
@@ -26,8 +26,8 @@ public:
 
 private:
     int number;
-    int speed;
     int pointNumber;
+    int speed;
     void LinearInt(std::vector<QPoint> points);
     void VectorInt(std::vector<QPoint> points);
     std::vector<QPoint> EuclideanToPolar(std::vector<QPoint> points);

@@ -21,7 +21,7 @@ Window::Window()
     speedSlider=new QSlider(Qt::Horizontal);
     speedSlider->setMinimum(1);
     speedSlider->setMaximum(5);
-    speedLabel= new QLabel(tr("Speed"));
+    speedLabel= new QLabel(tr("FPS"));
     speedLabel->setBuddy(speedSlider);
 
     //drawLine button
@@ -61,7 +61,7 @@ Window::Window()
 
     QGridLayout *mainLayout = new QGridLayout;
 
-    mainLayout->setRowStretch(1,renderArea->height);
+    mainLayout->setRowStretch(0,renderArea->height);
     //Columns with a higher stretch factor take more of the available space.
     //default is 0
 
@@ -85,7 +85,7 @@ Window::Window()
     mainLayout->addWidget(modeComboBox, 2, 3);
     mainLayout->addWidget(playButton, 3, 3);
 
-    mainLayout->addWidget(statusLabel,0,0);
+    mainLayout->addWidget(statusLabel,1,0);
 
     setLayout(mainLayout);
 

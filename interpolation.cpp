@@ -9,7 +9,7 @@ Interpolation::Interpolation()
     interpolationMode=vector;
 }
 
-int Interpolation::getRefreshFreq(){
+int Interpolation::getRefreshInterval(){
     return 5000/(speed*number);
 }
 void Interpolation::setSpeed(int value){
@@ -126,7 +126,8 @@ std::vector<QPoint> Interpolation::PolarToEuclidian(std::vector<QPoint> points){
         if(i%pointNumber==0){
             euclideanPoints.push_back(QPoint(r*std::cos(t),r*std::sin(t))+origins[i/pointNumber]);
         }else{
-            euclideanPoints.push_back(QPoint(r*std::cos(t)+euclideanPoints[i-1].x(),r*std::sin(t)+euclideanPoints[i-1].y()));
+            euclideanPoints.push_back(QPoint(r*std::cos(t)+euclideanPoints[i-1].x(),
+                                      r*std::sin(t)+euclideanPoints[i-1].y()));
         }
 
     }

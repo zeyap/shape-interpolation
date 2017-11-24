@@ -40,6 +40,8 @@ void RenderArea::setNumber(int value){
 
 void RenderArea::setSpeed(float value){
     interpolationControl->setSpeed(value);
+    QString str;
+    Window::setStatus(str.setNum(1000/interpolationControl->getRefreshInterval())+" frames/sec");
     SetTimer();
 }
 
@@ -52,7 +54,7 @@ void RenderArea::SetTimer(){
     isTimerEnabled=true;
 
     connect(timer, SIGNAL(timeout()), this, SLOT(UpdateAndShootScreen()));
-    timer->start(interpolationControl->getRefreshFreq());
+    timer->start(interpolationControl->getRefreshInterval());
 }
 
 void RenderArea::UpdateAndShootScreen(){
